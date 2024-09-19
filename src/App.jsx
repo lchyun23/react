@@ -1,42 +1,34 @@
 import '@/App.css'
 import { produce } from 'immer'
-import { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react'
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react'
 
-/** reducer : action에 따라 상태 전이를 미리 정해놓는 것이다. 자율성 보장 안 됨.
- *
- * @param {*} previous = (이전) 상태
- * @param {*} action =         상태변이 요청 (어떻게 변경할지)
- * @returns
- */
-
-function reducer(previous, action /* {type(수행 타입), payload(유저 파라미터) }*/) {
-  switch (action.type) {
-    case 'INCREASE':
-      return previous + action.payload
-      break
-    case 'DECREASE':
-      return previous - action.payload
-    default:
-      throw new Error('존재하지 않는 action.type입니다.')
-  }
+// Count 안에서 count를 넘기려면? - useState
+// useContext를 통해 CreatedContext 값 넘기기.
+function Count() {
+  const count = useContext(CreatedContext)
+  return <div>{count}</div>
 }
-// setState(previous, action) => {
-//   return previous + 1
-// }
+
+const CreatedContext = createContext(0 /* Default Value, DV */) // 0값을 제공한다. 숫자를 제공하는 context
 
 function App() {
-  // const [count, setCount] = useState(0)
-  const [count, dispatch] = useReducer(reducer, 0)
+  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>{count}</div>
-      {/* <button onClick={() => setCount(count + 10)}>증가</button> */}
-      <button onClick={() => dispatch({ type: 'INCREASE', payload: 5 })}>증가</button>
-      {/* <button onClick={() => setCount(count - 10)}>감소</button> */}
-      <button onClick={() => dispatch({ type: 'DECREASE', payload: 8 })}>감소</button>
-      {/* 책임분리 느낌이네용. reducer에게 다 넘겨버리기. - redux 때문에 짚고 넘어가는 중. */}
-    </>
+    // provider 설정 완료.
+    <CreatedContext.Provider value={count}>
+      <Count />
+      {/* consumer */}
+      <button onClick={(e) => setCount((previous) => previous + 1)}>증가</button>
+    </CreatedContext.Provider>
   )
 }
 
