@@ -1,3 +1,5 @@
+// context 사용법
+
 import '@/App.css'
 import { produce } from 'immer'
 import {
@@ -17,13 +19,13 @@ function Count() {
   return <div>{count}</div>
 }
 
-const CreatedContext = createContext(0 /* Default Value, DV */) // 0값을 제공한다. 숫자를 제공하는 context
+const CreatedContext = createContext(0 /* Default Value-private context, DV */) // 0값을 제공한다. 숫자를 제공하는 context
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    // provider 설정 완료.
+    // provider 설정 완료. initial value.
     <CreatedContext.Provider value={count}>
       <Count />
       {/* consumer */}
