@@ -46,3 +46,13 @@
   opacity: 1 !important;
   transition: all 100ms ease-in;
 }
+
+.component-box {
+  border: 2px solid white;
+  padding: 10px;
+}
+
+.section-box {
+  border: 2px solid rgb(255, 255, 143);
+  padding: 10px;
+}
