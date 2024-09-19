@@ -1,29 +1,32 @@
-// 렌더 절차를 상세하게 본다.
-// 상태 -> 렌더 (JSX -> JSON)
-
 import '@/App.css'
 import { produce } from 'immer'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
+function Input({ value, onChange }) {
+  console.log('- 자식 Input 컴포넌트 rerendered (이슈 : 2번 리렌더되는걸 확인할 수 있다.)')
+
+  return (
+    <input
+      value={value}
+      onChange={(event) => {
+        const value = event.target.value
+        onChange(value)
+      }}
+    />
+  )
+}
+
 function App() {
-  const [value, setValue] = useState(0) // 상태가 바뀌었다.
+  const [outerValue, setOuterValue] = useState('')
 
-  useLayoutEffect(() => {
-    console.log('2. Layout 직후 : useLayoutEffect')
-    if (value === 0) {
-      setValue(10 + Math.random() * 200)
-    }
-  }, [value])
+  console.log('- 부모 App 페이지 rerendered')
 
-  useEffect(() => {
-    console.log('3. Paint 직후 : useEffect')
-    if (value === 0) {
-      setValue(10 + Math.random() * 200)
-    }
-  }, [value])
-
-  console.log('1. Render : JSX -> JSON -> Virtual DOM -> Reconciliation-> Commit(DOM Mutation')
-  return <button onClick={() => setValue(0)}>value: {value}</button>
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <Input value={outerValue} onChange={(value) => setOuterValue(value)} />
+      <input value={outerValue} onChange={(event) => setOuterValue(event.target.value)} />
+    </div>
+  )
 }
 
 export default App
