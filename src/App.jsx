@@ -15,7 +15,7 @@ function reducer(previous, action /* {type(수행 타입), payload(유저 파라
       return previous + 10
       break
     case 'DECREASE':
-      return previous + 10
+      return previous - 10
     default:
       throw new Error('존재하지 않는 action.type입니다.')
   }
